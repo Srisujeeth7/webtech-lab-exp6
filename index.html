@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript - Timer Functions and Arrays</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f2f6fc;
+            color: #222;
+        }
+
+        h1 {
+            text-align: center;
+            color: #163b70;
+        }
+
+        h2 {
+            color: #174d91;
+        }
+
+        .container {
+            background-color: white;
+            padding: 25px;
+            margin: 25px auto;
+            max-width: 850px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #1769aa;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background-color: #0d4779;
+        }
+
+        #time {
+            font-size: 35px;
+            color: #16803c;
+            font-weight: bold;
+        }
+
+        #para {
+            font-size: 18px;
+            transition: font-size 0.3s;
+        }
+
+        #carArea {
+            position: relative;
+            height: 130px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            background-color: #f4f4f4;
+        }
+
+        #img {
+            position: absolute;
+            left: 0px;
+            top: 35px;
+            width: 120px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1769aa;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>JAVASCRIPT - TIMER FUNCTIONS AND ARRAYS</h1>
+
+    <div class="container">
+        <h2>Question 1: Digital Clock</h2>
+
+        <p>Current Time:</p>
+
+        <div id="time">00:00:00</div>
+
+        <script>
+            function display() {
+                var d = new Date();
+
+                var hours = String(d.getHours()).padStart(2, '0');
+                var minutes = String(d.getMinutes()).padStart(2, '0');
+                var seconds = String(d.getSeconds()).padStart(2, '0');
+
+                document.getElementById("time").innerHTML =
+                    hours + ":" + minutes + ":" + seconds;
+            }
+
+            display();
+            setInterval(display, 1000);
+        </script>
+    </div>
+
+
+    <div class="container" id="backgroundSection">
+        <h2>Question 2: Dynamic Background Colour</h2>
+
+        <p>The background colour changes automatically every 30 seconds.</p>
+
+        <button onclick="setBackgroundColor()">
+            Change Background Now
+        </button>
+
+        <script>
+            function setBackgroundColor() {
+                var red = Math.floor(Math.random() * 256);
+                var green = Math.floor(Math.random() * 256);
+                var blue = Math.floor(Math.random() * 256);
+
+                var color = "rgb(" + red + "," +
+                            green + "," + blue + ")";
+
+                document.body.style.backgroundColor = color;
+            }
+
+            setInterval(setBackgroundColor, 30000);
+        </script>
+    </div>
+
+
+    <div class="container">
+        <h2>Question 3: Change Font Size Using Mouse Events</h2>
+
+        <p id="para"
+           onmouseover="incSize()"
+           onmouseout="decSize()">
+
+            Move your mouse over me to increase the font size!
+        </p>
+
+        <script>
+            function incSize() {
+                document.getElementById("para").style.fontSize = "28px";
+            }
+
+            function decSize() {
+                document.getElementById("para").style.fontSize = "18px";
+            }
+        </script>
+    </div>
+
+
+    <div class="container">
+        <h2>Question 4: Move and Stop a Car Image</h2>
+
+        <p>Click Move to move the car and Stop to stop it.</p>
+
+        <button onclick="moveRight()">Move</button>
+        <button onclick="stop()">Stop</button>
+        <button onclick="resetCar()">Reset</button>
+
+        <div id="carArea">
+            <img id="img"
+                 src="https://www.pngall.com/wp-content/uploads/5/Red-Car-PNG-Image.png"
+                 alt="Car Image">
+        </div>
+
+        <script>
+            var imgObj = document.getElementById("img");
+            var animate = null;
+            var position = 0;
+
+            function init() {
+                imgObj.style.left = "0px";
+            }
+
+            function moveRight() {
+                if (animate !== null) {
+                    return;
+                }
+
+                function move() {
+                    position += 2;
+
+                    var maxPosition =
+                        document.getElementById("carArea").clientWidth
+                        - imgObj.offsetWidth;
+
+                    if (position >= maxPosition) {
+                        position = maxPosition;
+                        stop();
+                        imgObj.style.left = position + "px";
+                        return;
+                    }
+
+                    imgObj.style.left = position + "px";
+                    animate = setTimeout(move, 10);
+                }
+
+                move();
+            }
+
+            function stop() {
+                clearTimeout(animate);
+                animate = null;
+            }
+
+            function resetCar() {
+                stop();
+                position = 0;
+                imgObj.style.left = "0px";
+            }
+
+            init();
+        </script>
+    </div>
+
+
+    <div class="container">
+        <h2>Question 5: Array of Student Objects</h2>
+
+        <p>Student details and their year of birth:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Register Number</th>
+                    <th>Year of Birth</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+
+            <tbody id="studentData">
+            </tbody>
+        </table>
+
+        <script>
+            var students = [
+                {
+                    name: "John",
+                    regno: "UR13CS129",
+                    year: 1999
+                },
+                {
+                    name: "Rahul",
+                    regno: "UR14CS130",
+                    year: 2001
+                },
+                {
+                    name: "Priya",
+                    regno: "UR15CS131",
+                    year: 2002
+                },
+                {
+                    name: "David",
+                    regno: "UR12CS132",
+                    year: 1998
+                },
+                {
+                    name: "Sneha",
+                    regno: "UR16CS133",
+                    year: 2003
+                }
+            ];
+
+            var output = "";
+
+            for (var i = 0; i < students.length; i++) {
+
+                output += "<tr>";
+
+                output += "<td>" + students[i].name + "</td>";
+
+                output += "<td>" + students[i].regno + "</td>";
+
+                output += "<td>" + students[i].year + "</td>";
+
+                if (students[i].year < 2000) {
+                    output += "<td>Born Before 2000</td>";
+                }
+                else {
+                    output += "<td>Born After 2000</td>";
+                }
+
+                output += "</tr>";
+            }
+
+            document.getElementById("studentData").innerHTML = output;
+        </script>
+    </div>
+
+
+    <footer>
+        <p>JavaScript Lab - Exercise No. 06</p>
+        <p>Reg. No.: URK24CS1214</p>
+        <p>Timer Functions and Arrays</p>
+    </footer>
+
+</body>
+</html>
